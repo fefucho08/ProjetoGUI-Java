@@ -14,7 +14,7 @@ import exceptions.InvalidFileType;
 
 public class FileController {
 	private static File fileChosen;
-	public static void openFileOnTextArea(JFrame frame, JTextArea label){
+	public static String openFileOnTextArea(JFrame frame){
 		try {
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -25,12 +25,12 @@ public class FileController {
 				throw new InvalidFileType("Arquivo deve ser txt!");
 			}
 			
-			try (Scanner sc = new Scanner(Paths.get(fileChosen.getAbsolutePath()), StandardCharsets.UTF_8)) {
-				String fileContent = sc.useDelimiter("\\A").next();
-				label.setText(fileContent);
-				label.repaint();
-			}
 			
+			String fileContent;
+			try (Scanner sc = new Scanner(Paths.get(fileChosen.getAbsolutePath()), StandardCharsets.UTF_8)) {
+				fileContent = sc.useDelimiter("\\A").next();
+			}
+			return fileContent;
 		}
 		catch(InvalidFileType ex) {
 			JOptionPane.showMessageDialog(frame, ex.getMessage());
@@ -38,11 +38,10 @@ public class FileController {
 		catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
+		return null;
 	}
 	
-	public static void closeTextAreaFile(JTextArea area) {
+	public static void closeTextAreaFile() {
 		fileChosen = null;
-		area.setText("");
-		area.repaint();
 	}
 }
