@@ -13,9 +13,9 @@ public class FileContentPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	JScrollPane textScrollPane;
-	JTextArea fileText;
-	JLabel fileTitle;
+	private JScrollPane textScrollPane;
+	private JTextArea fileText;
+	private JLabel fileTitle;
 	private Component verticalStrutNorth;
 	private Component verticalStrutSouth;
 	
