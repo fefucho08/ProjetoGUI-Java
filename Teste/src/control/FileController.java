@@ -7,41 +7,37 @@ import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-
-import exceptions.InvalidFileType;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FileController {
-	private static File fileChosen;
-	public static String openFileOnTextArea(JFrame frame){
+	public static File openFile(JFrame frame, FileNameExtensionFilter filter) throws Exception{
 		try {
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			fileChooser.showOpenDialog(frame);
-			fileChosen = fileChooser.getSelectedFile();
+			fileChooser.setFileFilter(filter);
 			
-			if(!fileChosen.getName().endsWith(".txt")) {
-				throw new InvalidFileType("Arquivo deve ser txt!");
+			int res = fileChooser.showOpenDialog(frame);
+			if(res != JFileChooser.APPROVE_OPTION) {
+				throw new Exception();
 			}
 			
+			return fileChooser.getSelectedFile();
 			
-			String fileContent;
-			try (Scanner sc = new Scanner(Paths.get(fileChosen.getAbsolutePath()), StandardCharsets.UTF_8)) {
-				fileContent = sc.useDelimiter("\\A").next();
-			}
-			return fileContent;
-		}
-		catch(InvalidFileType ex) {
-			JOptionPane.showMessageDialog(frame, ex.getMessage());
 		}
 		catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			throw ex;
 		}
-		return null;
 	}
 	
-	public static void closeTextAreaFile() {
-		fileChosen = null;
+	public static String getFileContent(File file) {
+		String fileContent;
+		try (Scanner sc = new Scanner(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8)) {
+			fileContent = sc.useDelimiter("\\A").next();
+			return fileContent;
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return "";
 	}
 }

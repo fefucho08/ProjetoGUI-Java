@@ -3,6 +3,7 @@ package view;
 import java.awt.EventQueue;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import control.FileController;
 
@@ -12,13 +13,14 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.awt.event.ActionEvent;
 
 
 public class MainWindow extends JFrame implements ActionListener{
 	
 	private JPanel contentPane;
-	private JTextArea pageText;
+	private FileContentPanel fileContent;
 	private JPanel footer;
 	private JLabel footerLabel;
 	private JMenuBar menuBar;
@@ -27,10 +29,10 @@ public class MainWindow extends JFrame implements ActionListener{
 	private JMenuItem closeFile;
 	private JSeparator separator;
 	private JMenuItem closeApp;
-	private JMenu menuConfiguracao;
-	private JMenuItem configPattern;
-	private JMenuItem configColors;
-	private JMenuItem configSpeed;
+	private JMenu menuConfig;
+	private JMenu configPattern;
+	private JMenu configColors;
+	private JMenu configSpeed;
 	private JMenu helpMenu;
 	private JMenuItem helpHelp;
 	private JMenuItem helpAbout;
@@ -61,21 +63,21 @@ public class MainWindow extends JFrame implements ActionListener{
 				(int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.5));
 		
 		// WINDOW´S COMPONENTS
+		
+		// TODO: SUBSTITUIR ESSE JPANEL PELO FUNDO ANIMADO
 		this.contentPane = new JPanel();
+		contentPane.setBackground(Color.RED);
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		this.pageText = new JTextArea();
-		pageText.setBackground(new Color(0,0,0,0));
-		pageText.setOpaque(false);
-		pageText.setEditable(false);
-		pageText.setFocusable(false);
-		contentPane.add(pageText, BorderLayout.CENTER);
+		this.fileContent = new FileContentPanel();
+		fileContent.setVisible(false);
+		contentPane.add(fileContent, BorderLayout.CENTER);
 		
 		this.footer = new JPanel();
 		footer.setBackground(Color.LIGHT_GRAY);
 		contentPane.add(footer, BorderLayout.SOUTH);
-		
+
 		this.footerLabel = new JLabel();
 		footer.add(footerLabel);
 		footerLabel.setText(this.getClass().getSimpleName());
@@ -98,17 +100,17 @@ public class MainWindow extends JFrame implements ActionListener{
 		this.closeApp = new JMenuItem("Sair");
 		fileMenu.add(closeApp);
 		
-		this.menuConfiguracao = new JMenu("Configuração");
-		menuBar.add(menuConfiguracao);
+		this.menuConfig = new JMenu("Configuração");
+		menuBar.add(menuConfig);
 		
-		this.configPattern = new JMenuItem("Padrões");
-		menuConfiguracao.add(configPattern);
+		this.configPattern = new JMenu("Padrões");
+		menuConfig.add(configPattern);
 		
-		this.configColors = new JMenuItem("Cores");
-		menuConfiguracao.add(configColors);
+		this.configColors = new JMenu("Cores");
+		menuConfig.add(configColors);
 		
-		this.configSpeed = new JMenuItem("Velocidade");
-		menuConfiguracao.add(configSpeed);
+		this.configSpeed = new JMenu("Velocidade");
+		menuConfig.add(configSpeed);
 		
 		this.helpMenu = new JMenu("Ajuda");
 		menuBar.add(helpMenu);
@@ -132,15 +134,24 @@ public class MainWindow extends JFrame implements ActionListener{
 	private void setupListeners() {
 		openFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setTextContent(FileController.openFileOnTextArea(MainWindow.this));
+				try {
+					File file = FileController.openFile(MainWindow.this, new FileNameExtensionFilter("Arquivos texto", "txt"));
+					String fileText = FileController.getFileContent(file);
+					String fileTitle = file.getName();
+					fileContent.setTextContent(fileTitle, fileText);
+					fileContent.setVisible(true);
+				}
+				catch(Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
 		
 		closeFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FileController.closeTextAreaFile();
-				setTextContent("");
+				fileContent.setVisible(false);
+				fileContent.setTextContent("","");
 			}
 		});
 		
@@ -152,11 +163,6 @@ public class MainWindow extends JFrame implements ActionListener{
 				exitSystem();
 			}
 		});
-	}
-	
-	private void setTextContent(String text) {
-		this.pageText.setText(text);
-		pageText.repaint();
 	}
 	
 	private void exitSystem() {
