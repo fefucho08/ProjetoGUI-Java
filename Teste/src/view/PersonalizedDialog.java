@@ -31,13 +31,13 @@ public class PersonalizedDialog extends JDialog {
 	 */
 	public PersonalizedDialog() {
 		setBounds(100, 100, 450, 300);
-		getContentPane().setLayout(new BorderLayout());
+		getLayeredPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		getLayeredPane().add(contentPanel, BorderLayout.CENTER);
 		{
 			JPanel buttonPane = new JPanel();
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			getLayeredPane().add(buttonPane, BorderLayout.SOUTH);
 			buttonPane.setLayout(new BorderLayout(0, 0));
 			{
 				JButton cancelButton = new JButton("Fechar");

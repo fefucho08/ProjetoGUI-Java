@@ -15,7 +15,13 @@ public class ProjectMenuBar extends JMenuBar {
 	private JMenuItem closeApp;
 	private JMenu menuConfig;
 	private JMenu configPattern;
+	
 	private JMenu configColors;
+	private JRadioButtonMenuItem green;
+	private JRadioButtonMenuItem red;
+	private JRadioButtonMenuItem blue;
+	private JRadioButtonMenuItem yellow;
+	
 	private JMenu configSpeed;
 	private JRadioButtonMenuItem lowSpeed;
 	private JRadioButtonMenuItem mediumSpeed;
@@ -49,6 +55,16 @@ public class ProjectMenuBar extends JMenuBar {
 		
 		this.configColors = new JMenu("Cores");
 		menuConfig.add(configColors);
+		
+		blue = new JRadioButtonMenuItem("Azul");
+		red = new JRadioButtonMenuItem("Vermelho", true);
+		green = new JRadioButtonMenuItem("Verde");
+		yellow = new JRadioButtonMenuItem("Amarelo");
+		
+		configColors.add(red);
+		configColors.add(blue);
+		configColors.add(green);
+		configColors.add(yellow);
 		
 		this.configSpeed = new JMenu("Velocidade");
 		menuConfig.add(configSpeed);
@@ -123,6 +139,22 @@ public class ProjectMenuBar extends JMenuBar {
 
 	public JRadioButtonMenuItem getHighSpeed() {
 		return highSpeed;
+	}
+	
+	public JRadioButtonMenuItem getGreenColor() {
+		return green;
+	}
+	
+	public JRadioButtonMenuItem getRedColor() {
+		return red;
+	}
+	
+	public JRadioButtonMenuItem getBlueColor() {
+		return blue;
+	}
+	
+	public JRadioButtonMenuItem getYellowColor() {
+		return yellow;
 	}
 
 	public ButtonGroup getSpeedButtonGroup() {
