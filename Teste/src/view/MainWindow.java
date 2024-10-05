@@ -1,18 +1,12 @@
 package view;
 
 import java.awt.EventQueue;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.*;
-
-import control.Animation;
 
 import java.awt.*;
 
 import java.awt.BorderLayout;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 
 public class MainWindow extends JFrame {
@@ -20,13 +14,9 @@ public class MainWindow extends JFrame {
 	private JPanel contentPane;
 	private FileContentPanel fileContent;
 	private JPanel footer;
-	private Icon icon;
 	private JLabel footerLabel;
 	private ProjectMenuBar menuBar;
 	
-	private MainWindowListener listener;
-	
-	private Animation animation;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -48,31 +38,20 @@ public class MainWindow extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/images/LogoFT.png")));
 		setTitle("Projeto GUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		setSize((int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.5),
+				(int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.5));
 		
-		int initialScreenWidth = (int) ((int)Toolkit.getDefaultToolkit().getScreenSize().width * 0.5);
-		int initialScreenHeight = (int) ((int)Toolkit.getDefaultToolkit().getScreenSize().height * 0.5);
+		// WINDOW´S COMPONENTS
 		
-		setBounds(0, 0, initialScreenWidth, initialScreenHeight);
-		setSize(initialScreenWidth, initialScreenHeight);
-
-		this.contentPane = new JPanel();
+		this.contentPane = new AnimatedBackground();
 		contentPane.setBackground(Color.RED);
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JLayeredPane container = new JLayeredPane();
-		contentPane.add(container, BorderLayout.CENTER);
-		
-		icon = new Icon();
-
-		
-		animation = new Animation(getWidth(), getHeight(), container, icon);
-		animation.run();
-		
 		this.fileContent = new FileContentPanel();
 		fileContent.setVisible(false);
-		fileContent.setBounds(0, 0, getWidth(), getHeight());
-		container.add(fileContent, JLayeredPane.PALETTE_LAYER);
+		contentPane.add(fileContent, BorderLayout.CENTER);
 		
 		this.footer = new JPanel();
 		footer.setBackground(Color.LIGHT_GRAY);
@@ -86,42 +65,10 @@ public class MainWindow extends JFrame {
 		setJMenuBar(menuBar);
 		
 		setupListeners();
-		
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                resizeComponents();
-            }
-        });
-
-        // Initial resizing
-        resizeComponents();
-    }
-
-    private void resizeComponents() {
-        int width = contentPane.getWidth();
-        int height = contentPane.getHeight();
-
-        // Resize file content panel to fit background
-        fileContent.setPreferredSize(new Dimension(width, height - 50)); // Leave space for footer
-        fileContent.setBounds(0, 0, width, height - 50); // Update bounds
-        fileContent.revalidate(); // Refresh layout
-        
-        animation.setHeight(height);
-        animation.setWidth(width);
-    }
+	}
 	
 	private void setupListeners() {
-		this.listener = new MainWindowListener(this);
-		
-		menuBar.getCloseApp().addActionListener(listener);
-		menuBar.getOpenFile().addActionListener(listener);
-		menuBar.getCloseFile().addActionListener(listener);
-		
-        menuBar.getGreenColor().addItemListener(listener);
-        menuBar.getRedColor().addItemListener(listener);
-        menuBar.getBlueColor().addItemListener(listener);
-        menuBar.getYellowColor().addItemListener(listener);
+		new MainWindowListener(this);		
 	}
 
 	public JPanel getContentPane() {
@@ -143,9 +90,6 @@ public class MainWindow extends JFrame {
 	public ProjectMenuBar getProjectMenuBar() {
 		return menuBar;
 	}
-	
-    public void setBackgroundColor(Color color) {
-    	contentPane.setBackground(color);
-    }
 
+	
 }

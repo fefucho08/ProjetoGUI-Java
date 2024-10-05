@@ -11,16 +11,18 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import exceptions.InvalidFileTypeException;
+
 public class FileController {
-	public static File openFile(JFrame frame, FileNameExtensionFilter filter) throws Exception {
+	public static File openFile(JFrame frame, FileNameExtensionFilter filter) {
 		try {
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			fileChooser.setFileFilter(filter);
 			
 			int res = fileChooser.showOpenDialog(frame);
-			if(res != JFileChooser.APPROVE_OPTION) {
-				throw new Exception();
+			if(res == JFileChooser.CANCEL_OPTION) {
+				return null;
 			}
 			
 			File fileChosen = fileChooser.getSelectedFile();
@@ -35,12 +37,12 @@ public class FileController {
 			
 		}
 		catch(InvalidFileTypeException ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage());
-			throw ex;
+			JOptionPane.showMessageDialog(frame, ex.getMessage());
 		}
 		catch(Exception ex) {
-			throw ex;
+			ex.printStackTrace();
 		}
+		return null;
 	}
 	
 	public static String getFileContent(File file) {
