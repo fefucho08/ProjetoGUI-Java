@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -23,6 +25,8 @@ public class MainWindow extends JFrame {
 	private ProjectMenuBar menuBar;
 	
 	private MainWindowListener listener;
+	
+	private Animation animation;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -50,11 +54,7 @@ public class MainWindow extends JFrame {
 		
 		setBounds(0, 0, initialScreenWidth, initialScreenHeight);
 		setSize(initialScreenWidth, initialScreenHeight);
-        //setLocationRelativeTo(null); // Center on screen
-		
-		// WINDOW´S COMPONENTS
-		
-		// TODO: SUBSTITUIR ESSE JPANEL PELO FUNDO ANIMADO
+
 		this.contentPane = new JPanel();
 		contentPane.setBackground(Color.RED);
 		setContentPane(contentPane);
@@ -63,12 +63,10 @@ public class MainWindow extends JFrame {
 		JLayeredPane container = new JLayeredPane();
 		contentPane.add(container, BorderLayout.CENTER);
 		
-		
 		icon = new Icon();
-		icon.setBounds(100, 0, getWidth(), getHeight()); // Set bounds
-		container.add(icon, JLayeredPane.DEFAULT_LAYER);
+
 		
-		Runnable animation = new Animation(getWidth(), getHeight(), icon, 1);
+		animation = new Animation(getWidth(), getHeight(), container, icon);
 		animation.run();
 		
 		this.fileContent = new FileContentPanel();
@@ -109,6 +107,8 @@ public class MainWindow extends JFrame {
         fileContent.setBounds(0, 0, width, height - 50); // Update bounds
         fileContent.revalidate(); // Refresh layout
         
+        animation.setHeight(height);
+        animation.setWidth(width);
     }
 	
 	private void setupListeners() {

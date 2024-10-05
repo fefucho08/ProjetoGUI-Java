@@ -8,15 +8,15 @@ import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 
-public class Icon extends JPanel {
+public class Icon extends JPanel implements Cloneable {
 	private int width;
 	private int height;
 	
 	private Image image;
 	
 	public Icon() {
-		this.width = 200;
-		this.height = 200;
+		this.width = 100;
+		this.height = 100;
 		
 		image = Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource("/images/LogoFT.png"));
 		
@@ -52,4 +52,9 @@ public class Icon extends JPanel {
 	public int getHeight() {
 		return height;
 	}
+	
+	@Override
+	 public Object clone() throws CloneNotSupportedException {
+	 return super.clone();
+	 }
 }

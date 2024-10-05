@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+
+import view.Icon;
 
 public class Animation implements Runnable {
 	protected int delay;          // interval between frames in millisec
@@ -15,72 +18,87 @@ public class Animation implements Runnable {
 	
 	protected int width;
 	protected int height;
-	protected int quantity;
 	
-	protected Thread banner;
+	protected Thread animationThread;
+	protected JLayeredPane targetContainer;
 	
-	protected List<JPanel> icons;
+	protected List<Icon> icons;
+	protected Icon modelIcon;
 	
-	public Animation(int width, int height, JPanel icon, int quantity) {
+	public Animation(
+		int width, 
+		int height, 
+		JLayeredPane targetContainer,
+		Icon icon
+	) {
 		delay = 1000;
-		offset = 1;
+		offset = 10;
+		
+		this.icons = new ArrayList<>();
+		
 		this.width = width;
 		this.height = height;
-		this.quantity = quantity;
 		
-		icons = new ArrayList<JPanel>(Collections.nCopies(quantity, icon));
+		this.modelIcon = icon;
+		this.targetContainer = targetContainer;
 	}
 	
 	@Override
 	public void run() {
-		System.out.println("Starting thread...");
-		
-		Thread animationThread = new Thread(() -> {
-			icons.forEach((icon) -> {
-				int startDelay = ((int)(Math.random() * 10) + 1) * 1000;
-				
-				System.out.println("Delay: " + startDelay);
-				
-				Timer timer = new Timer(startDelay, new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						System.out.println("Update icon");
-						updateIcon(icon);
-					}
-				});
-				
-				System.out.println("Starting timer");
-				timer.setRepeats(false);
-				timer.start();
-			});
+		animationThread = new Thread(() -> {
+			int positionX = (int)(width / modelIcon.getWidth());
+			
+			for (int i = 0; i < positionX; i++) {
+				try {
+					Icon cloned = (Icon)modelIcon.clone();
+					icons.add(cloned);
+					
+					int startDelay = ((int)(Math.random() * 3) + 1) * 1000;
+					
+					cloned.setBounds(
+						cloned.getWidth() * i, 
+						this.height, 
+						cloned.getWidth(), 
+						cloned.getHeight()
+					);
+					
+					targetContainer.add(cloned, JLayeredPane.DEFAULT_LAYER);
+					
+					Timer timer = new Timer(startDelay, new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							updateIcon(cloned);
+						}
+					});
+					
+					timer.setRepeats(false);
+					timer.start();
+				} catch (CloneNotSupportedException e) {
+					e.printStackTrace();
+				}
+			}
 		});
 		
 		animationThread.start();
 	}
 	
 	public void updateIcon(JPanel icon) {
-		int updatedWidth = this.width / this.quantity;
-		
-		System.out.println("Width: " + updatedWidth);
-		
 		Timer timer = new Timer(0, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(() -> {
 					int y = icon.getY();
 					
-					System.out.println("y: " + y);
-					
-					int updatedHeight = y - 5;
+					int updatedHeight = y - 10;
 					
 					if (updatedHeight <= 0) {
 						updatedHeight = height;
 					}
 					
-					icon.setBounds(updatedWidth, updatedHeight, icon.getWidth(), icon.getHeight());
+					icon.setBounds(icon.getX(), updatedHeight, icon.getWidth(), icon.getHeight());
 					icon.repaint();
 				});
 				
 				try {
-		            Thread.sleep(50); // Adjust as necessary
+		            Thread.sleep(5); // Adjust as necessary
 		        } catch (InterruptedException ex) {
 		            ex.printStackTrace();
 		        }
@@ -89,5 +107,25 @@ public class Animation implements Runnable {
 		
 		timer.start();
 		timer.setRepeats(true);
+	}
+	
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	
+	public void setWidth(int width) {
+		this.width = width;
+		this.restart();
+	}
+	
+	private void restart() {
+		for (Icon icon : icons) {
+			//System.out.print("Removing");
+			targetContainer.remove(icon);
+		}
+		
+		animationThread.interrupt();
+		icons = new ArrayList<>();
+		this.run();
 	}
 }
