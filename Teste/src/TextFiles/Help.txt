@@ -1,0 +1,13 @@
+Menu Arquivo:
+- **Abrir Arquivo**: Clique nesta opção para abrir um diálogo onde você pode selecionar um arquivo de texto do seu sistema. O conteúdo do arquivo será exibido na área de texto da tela.
+- **Fechar Arquivo**: Use esta opção para fechar o arquivo atualmente aberto. A área de texto será limpa.
+- **Sair**: Para encerrar a aplicação, selecione esta opção.
+
+Menu Configuração:
+- **Padrões**: Aqui você pode escolher entre diferentes padrões que controlam o comportamento dinâmico do fundo da aplicação.
+- **Cores**: Esta opção permite que você altere as cores do fundo dinâmico, personalizando a sua experiência de uso.
+- **Velocidade**: Ajuste a velocidade das animações de fundo para um visual que você ache mais agradável.
+
+Menu Ajuda:
+- **Ajuda**: Esta seção fornece informações sobre como utilizar a aplicação, incluindo descrições das funcionalidades e dicas de uso.
+- **Sobre**: Aqui você encontrará informações sobre a versão da aplicação, os desenvolvedores e outros detalhes relevantes.

@@ -1,6 +1,11 @@
 package view;
 
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
 
 public class ProjectMenuBar extends JMenuBar {
 	/**
@@ -15,12 +20,27 @@ public class ProjectMenuBar extends JMenuBar {
 	private JMenuItem closeApp;
 	private JMenu menuConfig;
 	private JMenu configPattern;
+	private JRadioButtonMenuItem rotatingStar;
+	private JRadioButtonMenuItem starWithNoRotation;
+	private JRadioButtonMenuItem noStar;
+	private ButtonGroup patternGroup;
 	private JMenu configColors;
+	private JRadioButtonMenuItem primaryColors;
+	private JRadioButtonMenuItem pastelColors;
+	private JRadioButtonMenuItem neutralColors;
+	private JRadioButtonMenuItem rainbowColors;
+	private ButtonGroup colorGroup;
 	private JMenu configSpeed;
-	private JRadioButtonMenuItem lowSpeed;
-	private JRadioButtonMenuItem mediumSpeed;
-	private JRadioButtonMenuItem highSpeed;
-	private ButtonGroup speedGroup;
+	private JMenu backgroundSpeed;
+	private JRadioButtonMenuItem backgroundLowSpeed;
+	private JRadioButtonMenuItem backgroundMediumSpeed;
+	private JRadioButtonMenuItem backgroundHighSpeed;
+	private JMenu starSpeed;
+	private JRadioButtonMenuItem starLowSpeed;
+	private JRadioButtonMenuItem starMediumSpeed;
+	private JRadioButtonMenuItem starHighSpeed;
+	private ButtonGroup backgroundSpeedGroup;
+	private ButtonGroup starSpeedGroup;
 	private JMenu helpMenu;
 	private JMenuItem helpHelp;
 	private JMenuItem helpAbout;
@@ -29,52 +49,106 @@ public class ProjectMenuBar extends JMenuBar {
 		this.fileMenu = new JMenu("Arquivo");
 		this.add(fileMenu);
 		
-		this.openFile = new JMenuItem("Abrir Arquivo");
+		openFile = new JMenuItem("Abrir Arquivo");
 		fileMenu.add(openFile);
 		
-		this.closeFile = new JMenuItem("Fechar Arquivo");
+		closeFile = new JMenuItem("Fechar Arquivo");
 		fileMenu.add(closeFile);
 		
-		this.separator = new JSeparator();
+		separator = new JSeparator();
 		fileMenu.add(separator);
 		
-		this.closeApp = new JMenuItem("Sair");
+		closeApp = new JMenuItem("Sair");
 		fileMenu.add(closeApp);
 		
-		this.menuConfig = new JMenu("Configuração");
+		menuConfig = new JMenu("Configuração");
 		this.add(menuConfig);
 		
-		this.configPattern = new JMenu("Padrões");
+		configPattern = new JMenu("Padrões");
 		menuConfig.add(configPattern);
 		
-		this.configColors = new JMenu("Cores");
+		patternGroup = new ButtonGroup();
+		
+		rotatingStar = new JRadioButtonMenuItem("Estrela Giratória", true);
+		configPattern.add(rotatingStar);
+		patternGroup.add(rotatingStar);
+
+		starWithNoRotation = new JRadioButtonMenuItem("Estrela Estática");
+		configPattern.add(starWithNoRotation);
+		patternGroup.add(starWithNoRotation);
+		
+		noStar = new JRadioButtonMenuItem("Sem estrela");
+		configPattern.add(noStar);
+		patternGroup.add(noStar);
+		
+		configColors = new JMenu("Cores");
 		menuConfig.add(configColors);
 		
-		this.configSpeed = new JMenu("Velocidade");
+		colorGroup = new ButtonGroup();
+		
+		primaryColors = new JRadioButtonMenuItem("Primárias");
+		configColors.add(primaryColors);
+		colorGroup.add(primaryColors);
+		
+		pastelColors = new JRadioButtonMenuItem("Pastel", true);
+		configColors.add(pastelColors);
+		colorGroup.add(pastelColors);
+		
+		neutralColors = new JRadioButtonMenuItem("Neutras");
+		configColors.add(neutralColors);
+		colorGroup.add(neutralColors);
+		
+		rainbowColors = new JRadioButtonMenuItem("Arco-íris");
+		configColors.add(rainbowColors);
+		colorGroup.add(rainbowColors);
+		
+		configSpeed = new JMenu("Velocidade");
 		menuConfig.add(configSpeed);
 		
-		lowSpeed = new JRadioButtonMenuItem("Lento");
-		configSpeed.add(lowSpeed);
+		backgroundSpeed = new JMenu("Fundo");
+		configSpeed.add(backgroundSpeed);
 		
-		mediumSpeed = new JRadioButtonMenuItem("Normal", true);
-		configSpeed.add(mediumSpeed);
+		backgroundSpeedGroup = new ButtonGroup();
 		
-		highSpeed = new JRadioButtonMenuItem("Rápido");
-		configSpeed.add(highSpeed);
+		backgroundLowSpeed = new JRadioButtonMenuItem("Devagar");
+		backgroundSpeed.add(backgroundLowSpeed);
+		backgroundSpeedGroup.add(backgroundLowSpeed);
 		
-		speedGroup = new ButtonGroup();
-		speedGroup.add(lowSpeed);
-		speedGroup.add(mediumSpeed);
-		speedGroup.add(highSpeed);
+		backgroundMediumSpeed = new JRadioButtonMenuItem("Médio", true);
+		backgroundSpeed.add(backgroundMediumSpeed);
+		backgroundSpeedGroup.add(backgroundMediumSpeed);
 		
-		this.helpMenu = new JMenu("Ajuda");
+		backgroundHighSpeed = new JRadioButtonMenuItem("Rápido");
+		backgroundSpeed.add(backgroundHighSpeed);
+		backgroundSpeedGroup.add(backgroundHighSpeed);
+		
+		starSpeed = new JMenu("Estrela");
+		configSpeed.add(starSpeed);
+		
+		starSpeedGroup = new ButtonGroup();
+		
+		starLowSpeed = new JRadioButtonMenuItem("Devagar");
+		starSpeed.add(starLowSpeed);
+		starSpeedGroup.add(starLowSpeed);
+		
+		starMediumSpeed = new JRadioButtonMenuItem("Médio", true);
+		starSpeed.add(starMediumSpeed);
+		starSpeedGroup.add(starMediumSpeed);
+		
+		starHighSpeed = new JRadioButtonMenuItem("Rápido");
+		starSpeed.add(starHighSpeed);
+		starSpeedGroup.add(starHighSpeed);
+		
+		helpMenu = new JMenu("Ajuda");
 		this.add(helpMenu);
 		
-		this.helpHelp = new JMenuItem("Ajuda");
+		helpHelp = new JMenuItem("Ajuda");
 		helpMenu.add(helpHelp);
 		
-		this.helpAbout = new JMenuItem("Sobre");
+		helpAbout = new JMenuItem("Sobre");
 		helpMenu.add(helpAbout);
+		
+		repaint();
 	}
 
 	public JMenu getFileMenu() {
@@ -105,30 +179,86 @@ public class ProjectMenuBar extends JMenuBar {
 		return configPattern;
 	}
 
+	public JRadioButtonMenuItem getRotatingStar() {
+		return rotatingStar;
+	}
+
+	public JRadioButtonMenuItem getStarWithNoRotation() {
+		return starWithNoRotation;
+	}
+
+	public JRadioButtonMenuItem getNoStar() {
+		return noStar;
+	}
+
+	public ButtonGroup getPatternGroup() {
+		return patternGroup;
+	}
+	
 	public JMenu getConfigColors() {
 		return configColors;
 	}
+	
+	public JRadioButtonMenuItem getPrimaryColors() {
+		return primaryColors;
+	}
+	
+	public JRadioButtonMenuItem getPastelColors() {
+		return pastelColors;
+	}
+	
+	public JRadioButtonMenuItem getNeutralColors() {
+		return neutralColors;
+	}
+	
+	public JRadioButtonMenuItem getRainbowColors() {
+		return rainbowColors;
+	}
 
+	public ButtonGroup getColorGroup() {
+		return colorGroup;
+	}
+	
 	public JMenu getConfigSpeed() {
 		return configSpeed;
 	}
 
-	public JRadioButtonMenuItem getLowSpeed() {
-		return lowSpeed;
+	public JRadioButtonMenuItem getBackgroundLowSpeed() {
+		return backgroundLowSpeed;
 	}
 
-	public JRadioButtonMenuItem getMediumSpeed() {
-		return mediumSpeed;
+	public JRadioButtonMenuItem getBackgroundMediumSpeed() {
+		return backgroundMediumSpeed;
 	}
 
-	public JRadioButtonMenuItem getHighSpeed() {
-		return highSpeed;
+	public JRadioButtonMenuItem getBackgroundHighSpeed() {
+		return backgroundHighSpeed;
 	}
 
-	public ButtonGroup getSpeedButtonGroup() {
-		return speedGroup;
+	public ButtonGroup getBackgroundSpeedGroup() {
+		return backgroundSpeedGroup;
 	}
 	
+	public JMenu getStarSpeed() {
+		return starSpeed;
+	}
+
+	public JRadioButtonMenuItem getStarLowSpeed() {
+		return starLowSpeed;
+	}
+
+	public JRadioButtonMenuItem getStarMediumSpeed() {
+		return starMediumSpeed;
+	}
+
+	public JRadioButtonMenuItem getStarHighSpeed() {
+		return starHighSpeed;
+	}
+
+	public ButtonGroup getStarSpeedGroup() {
+		return starSpeedGroup;
+	}
+
 	public JMenu getHelpMenu() {
 		return helpMenu;
 	}
@@ -140,5 +270,7 @@ public class ProjectMenuBar extends JMenuBar {
 	public JMenuItem getHelpAbout() {
 		return helpAbout;
 	}
+	
+	
 	
 }

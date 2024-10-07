@@ -17,7 +17,6 @@ public class MainWindow extends JFrame {
 	private JLabel footerLabel;
 	private ProjectMenuBar menuBar;
 	
-	private MainWindowListener listener;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -45,8 +44,7 @@ public class MainWindow extends JFrame {
 		
 		// WINDOW´S COMPONENTS
 		
-		// TODO: SUBSTITUIR ESSE JPANEL PELO FUNDO ANIMADO
-		this.contentPane = new JPanel();
+		this.contentPane = new AnimatedBackground();
 		contentPane.setBackground(Color.RED);
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -70,12 +68,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	private void setupListeners() {
-		this.listener = new MainWindowListener(this);
-		
-		menuBar.getCloseApp().addActionListener(listener);
-		menuBar.getOpenFile().addActionListener(listener);
-		menuBar.getCloseFile().addActionListener(listener);
-		
+		new MainWindowListener(this);		
 	}
 
 	public JPanel getContentPane() {
